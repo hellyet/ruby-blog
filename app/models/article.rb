@@ -1,3 +1,5 @@
+require "translit"
+
 class Article < ApplicationRecord
   include Visible
 
@@ -5,4 +7,8 @@ class Article < ApplicationRecord
 
   validates :title, presence: true
   validates :body, presence: true, length: { minimum: 10 }
+
+  def to_param
+    [id, Translit.convert(title, :english).downcase.gsub!(' ', '-')].join("-")
+  end
 end
