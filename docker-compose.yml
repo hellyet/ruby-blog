@@ -1,0 +1,30 @@
+services:
+  database:
+    image: mysql:latest
+    restart: always
+    volumes:
+      - ./storage:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=pwd123
+      - MYSQL_DATABASE=blog_production
+      - MYSQL_USER=blog
+      - MYSQL_PASSWORD=pwd123
+    ports:
+      - "3307:3306"
+
+  blog:
+    build: .
+    command: ./bin/rails s -b 0.0.0.0
+    ports: 
+      - "3001:3000"
+    depends_on: 
+      - database
+    links:
+      - database
+    environment:
+      - BLOG_DATABASE_PASSWORD=pwd123
+      - BLOG_DATABASE_HOST=database
+      - BLOG_DATABASE_PORT=3306
+      - BLOG_DATABASE_SOCKET=/var/run/mysqld/mysqld.sock
+      - SECRET_KEY_BASE=VerySecretKey
+      # - RAILS_ENV=development

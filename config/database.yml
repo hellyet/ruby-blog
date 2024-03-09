@@ -51,6 +51,9 @@ test:
 #
 production:
   <<: *default
+  host: <%= ENV["BLOG_DATABASE_HOST"] %>
+  port: <%= ENV["BLOG_DATABASE_PORT"] %>
   database: blog_production
   username: blog
   password: <%= ENV["BLOG_DATABASE_PASSWORD"] %>
+  socket: <%= ENV["BLOG_DATABASE_SOCKET"] %>
